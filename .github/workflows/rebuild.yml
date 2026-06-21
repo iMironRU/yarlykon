@@ -1,0 +1,33 @@
+name: rebuild admin
+
+# Регенерирует /admin/index.html из index.json после каждого изменения.
+# Не трогает /l/*.html — те уже коммитятся Worker'ом.
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - 'index.json'
+
+jobs:
+  rebuild:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with: { node-version: '20' }
+      - name: Render admin
+        run: node scripts/render-admin.mjs
+      - name: Commit if changed
+        run: |
+          git config user.name "yarlykon-bot"
+          git config user.email "yarlykon-bot@users.noreply.github.com"
+          if [[ -n "$(git status --porcelain admin/)" ]]; then
+            git add admin/
+            git commit -m "rebuild: admin index"
+            git push
+          else
+            echo "no changes"
+          fi

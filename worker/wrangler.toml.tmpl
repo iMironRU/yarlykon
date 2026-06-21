@@ -1,0 +1,31 @@
+name = "{{WORKER_NAME}}"
+main = "src/index.ts"
+compatibility_date = "2025-01-01"
+
+# Domain routing
+# routes = [
+#   { pattern = "{{API_DOMAIN}}/*", custom_domain = true }
+# ]
+
+# KV namespace (создаётся bootstrap'ом)
+[[kv_namespaces]]
+binding = "KV"
+id = "{{KV_NAMESPACE_ID}}"
+
+[vars]
+GITHUB_OWNER = "{{GITHUB_OWNER}}"
+GITHUB_REPO = "{{GITHUB_REPO}}"
+GITHUB_BRANCH = "main"
+PAGES_DOMAIN = "{{PAGES_DOMAIN}}"
+ALLOWED_USERS = "{{ALLOWED_USERS}}"
+SLUG_MODE = "{{SLUG_MODE}}"
+SLUG_LEN_INIT = "{{SLUG_LEN_INIT}}"
+SLUG_LEN_MAX = "{{SLUG_LEN_MAX}}"
+BATCH_MAX = "{{BATCH_MAX}}"
+METRIKA_ID = "{{METRIKA_ID}}"
+
+# Секреты заливаются через `wrangler secret put`:
+#   GITHUB_TOKEN
+#   TG_BOT_TOKEN
+#   VK_APP_SECRET   (опционально)
+#   MAX_BOT_TOKEN   (опционально)

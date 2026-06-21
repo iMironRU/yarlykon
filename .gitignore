@@ -1,0 +1,32 @@
+# dependencies
+node_modules/
+.pnp
+.pnp.js
+
+# deployed configs (rendered from .tmpl)
+worker/wrangler.toml
+worker/.dev.vars
+
+# secrets
+.env
+.env.local
+*.pem
+*.key
+
+# bootstrap state
+.bootstrap-state.json
+
+# build artifacts
+worker/dist/
+miniapp/dist/
+
+# OS / IDE
+.DS_Store
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# logs
+*.log
+npm-debug.log*

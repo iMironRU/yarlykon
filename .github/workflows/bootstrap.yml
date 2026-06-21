@@ -1,0 +1,82 @@
+name: bootstrap
+
+# Запускается вручную из вкладки Actions. Все секреты вводятся прямо в форме —
+# не сохраняются в логах workflow_dispatch (GitHub их маскирует).
+#
+# Если хочется перезапустить отдельную стадию — введи stage=N.
+
+on:
+  workflow_dispatch:
+    inputs:
+      pages_domain:
+        description: 'Pages domain (short.example.com или {user}.github.io/{repo})'
+        required: true
+      allowed_users:
+        description: 'Allowed users CSV (tg:123,vk:456,max:789)'
+        required: true
+      cf_account_id:
+        description: 'Cloudflare Account ID'
+        required: true
+      slug_mode:
+        description: 'Slug mode'
+        required: true
+        default: 'random'
+        type: choice
+        options: [random, counter]
+      stage:
+        description: 'Только эта стадия (1-8, пусто = все по порядку)'
+        required: false
+        default: ''
+
+jobs:
+  bootstrap:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+      pages: write
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with: { node-version: '20' }
+
+      - name: Install sodium for secret encryption
+        run: |
+          cd scripts && npm init -y >/dev/null 2>&1 || true
+          cd scripts && npm install --silent libsodium-wrappers
+
+      - name: Install wrangler
+        run: |
+          cd worker && npm install --silent
+
+      - name: Run bootstrap
+        env:
+          YARLYKON_GITHUB_OWNER:  ${{ github.repository_owner }}
+          YARLYKON_GITHUB_REPO:   ${{ github.event.repository.name }}
+          YARLYKON_GITHUB_TOKEN:  ${{ secrets.YARLYKON_GH_PAT }}
+          YARLYKON_CF_API_TOKEN:  ${{ secrets.CF_API_TOKEN }}
+          YARLYKON_CF_ACCOUNT_ID: ${{ inputs.cf_account_id }}
+          YARLYKON_TG_BOT_TOKEN:  ${{ secrets.TG_BOT_TOKEN }}
+          YARLYKON_PAGES_DOMAIN:  ${{ inputs.pages_domain }}
+          YARLYKON_ALLOWED_USERS: ${{ inputs.allowed_users }}
+          YARLYKON_SLUG_MODE:     ${{ inputs.slug_mode }}
+          YARLYKON_SLUG_LEN_INIT: '4'
+          YARLYKON_SLUG_LEN_MAX:  '8'
+          YARLYKON_BATCH_MAX:     '5'
+          YARLYKON_METRIKA_ID:    ${{ secrets.METRIKA_ID }}
+        run: |
+          if [ -n "${{ inputs.stage }}" ]; then
+            node scripts/bootstrap.mjs --stage=${{ inputs.stage }}
+          else
+            node scripts/bootstrap.mjs
+          fi
+
+# Подготовка перед первым запуском (один раз руками):
+#   1. Settings → Secrets → Actions, добавить:
+#      - YARLYKON_GH_PAT  (Fine-grained PAT с правом записи на этот репо)
+#      - CF_API_TOKEN     (Workers Scripts Edit + KV Edit)
+#      - TG_BOT_TOKEN     (из @BotFather)
+#      - METRIKA_ID       (опционально)
+#   2. Запустить этот workflow с заполненными inputs.

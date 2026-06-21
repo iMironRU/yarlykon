@@ -1,0 +1,37 @@
+<!doctype html>
+<html lang="ru">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <title>Ярлыкон</title>
+  <link rel="stylesheet" href="./style.css">
+  <!-- TG WebApp SDK — на других платформах скрипт молча не загрузится, ничего не сломает -->
+  <script src="https://telegram.org/js/telegram-web-app.js"></script>
+</head>
+<body>
+  <main id="app">
+    <header class="hdr">
+      <h1 class="hdr__title">Ярлыкон</h1>
+      <p class="hdr__sub">1–5 ссылок за раз</p>
+    </header>
+
+    <section class="inputs" id="inputs">
+      <!-- Поля добавляются JS, чтобы было легко расширить лимит -->
+    </section>
+
+    <div class="row">
+      <button class="btn btn--ghost" id="btn-add" type="button">+ ещё ссылку</button>
+      <button class="btn btn--primary" id="btn-go" type="button">Сократить</button>
+    </div>
+
+    <section class="results" id="results" hidden>
+      <h2 class="results__title">Готово</h2>
+      <ul class="results__list" id="results-list"></ul>
+    </section>
+
+    <div class="status" id="status" hidden></div>
+  </main>
+
+  <script type="module" src="./app.js"></script>
+</body>
+</html>
