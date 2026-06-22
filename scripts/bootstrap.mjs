@@ -180,6 +180,7 @@ async function stage6_configureBot(cfg, state) {
 
   await tg.setWebhook(cfg.tg_bot_token, `${workerUrl}/webhook/telegram`);
   await tg.setMenuButton(cfg.tg_bot_token, {
+    type: 'web_app',
     text: 'Ярлыкон',
     web_app: { url: `https://${cfg.pages_domain}/miniapp/` },
   });
