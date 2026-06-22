@@ -43,13 +43,14 @@ jobs:
         with: { node-version: '20' }
 
       - name: Install sodium for secret encryption
+        working-directory: scripts
         run: |
-          cd scripts && npm init -y >/dev/null 2>&1 || true
-          cd scripts && npm install --silent libsodium-wrappers
+          npm init -y >/dev/null 2>&1 || true
+          npm install --silent libsodium-wrappers
 
       - name: Install wrangler
-        run: |
-          cd worker && npm install --silent
+        working-directory: worker
+        run: npm install --silent
 
       - name: Run bootstrap
         env:
