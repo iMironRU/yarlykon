@@ -114,8 +114,16 @@ async function stage2_writeSecrets(cfg) {
   };
   for (const [name, value] of Object.entries(secrets)) {
     if (!value) continue;
-    await gh.setSecret(cfg.github_owner, cfg.github_repo, cfg.github_token, name, value);
-    console.log(`  · ${name}`);
+    try {
+      await gh.setSecret(cfg.github_owner, cfg.github_repo, cfg.github_token, name, value);
+      console.log(`  · ${name}`);
+    } catch (err) {
+      if (err.message?.includes('403')) {
+        console.log(`  · ${name} — skipped (PAT lacks Secrets permission, set manually)`);
+      } else {
+        throw err;
+      }
+    }
   }
 }
 
