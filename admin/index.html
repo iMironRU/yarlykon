@@ -1,0 +1,31 @@
+<!doctype html>
+<html lang="ru">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Ярлыкон — журнал</title>
+  <style>
+    :root { color-scheme: light dark; --fg: #111; --bg: #fafafa; --muted: #6b7280; --border: #e5e7eb; --accent: #2563eb; }
+    @media (prefers-color-scheme: dark) { :root { --fg: #e5e7eb; --bg: #0f172a; --muted: #94a3b8; --border: #1f2937; } }
+    body { font-family: -apple-system, system-ui, sans-serif; background: var(--bg); color: var(--fg); margin: 0; padding: 24px; }
+    .wrap { max-width: 1000px; margin: 0 auto; }
+    h1 { font-size: 22px; margin: 0 0 4px; font-weight: 600; }
+    .meta { color: var(--muted); font-size: 13px; margin-bottom: 24px; }
+    table { width: 100%; border-collapse: collapse; }
+    th, td { padding: 12px 8px; border-bottom: 1px solid var(--border); text-align: left; vertical-align: top; }
+    th { color: var(--muted); font-weight: 500; font-size: 12px; text-transform: uppercase; letter-spacing: 0.06em; }
+    .slug a { color: var(--accent); text-decoration: none; font-family: ui-monospace, monospace; }
+    .t-title { font-weight: 500; }
+    .t-url { color: var(--muted); font-size: 12px; word-break: break-all; }
+    .date, .by { color: var(--muted); font-size: 13px; white-space: nowrap; }
+    .empty { color: var(--muted); padding: 32px; text-align: center; }
+  </style>
+</head>
+<body>
+  <div class="wrap">
+    <h1>Ярлыкон</h1>
+    <p class="meta">всего ссылок: 0 · сгенерировано 2026-06-22T11:10:40.433Z</p>
+    <div class="empty">Пока пусто. Создавай через Mini App или /shorten в боте.</div>
+  </div>
+</body>
+</html>
